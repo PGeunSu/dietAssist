@@ -1,5 +1,6 @@
 package com.rlj.dietAssist.entity.user;
 
+import com.rlj.dietAssist.dto.SignUpDto;
 import com.rlj.dietAssist.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,10 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -35,6 +37,5 @@ public class User extends BaseEntity {
   //신체 정보
   private float height;
   private float weight;
-
 
 }

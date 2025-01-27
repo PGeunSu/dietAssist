@@ -25,7 +25,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EntityListeners(value = AuditingEntityListener.class)
 public class Favorite extends BaseEntity {
 
