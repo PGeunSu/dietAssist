@@ -2,6 +2,7 @@ package com.rlj.dietAssist.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class SignUpDto {
   private String email;
 
   @NotBlank(message = "비밀번호를 입력해주세요.")
-  @Size(min = 6, max = 20, message = "비밀번호는 6자 이상 20자 이하로 입력해주세요.")
+  @Size(min = 4, max = 20, message = "비밀번호는 4자 이상 20자 이하로 입력해주세요.")
   private String password;
 
   @NotBlank(message = "이름을 입력해주세요.")
@@ -23,10 +24,10 @@ public class SignUpDto {
   @Size(min = 9, max = 11, message = "전화번호는 9자 이상 11자 이하로 입력해주세요.")
   private String phone;
 
-  @NotBlank(message = "신장을 입력해주세요.")
+  @NotNull(message = "신장을 입력해주세요.")
   private float height;
 
-  @NotBlank(message = "체중을 입력해주세요.")
+  @NotNull(message = "체중을 입력해주세요.")
   private float weight;
 
 
