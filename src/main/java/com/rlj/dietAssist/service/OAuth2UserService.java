@@ -62,6 +62,7 @@ public class OAuth2UserService {
         .phone("000-0000-0000")
         .height(0)
         .weight(0)
+        .changed(true)
         .build();
 
     return userRepository.save(newUser);

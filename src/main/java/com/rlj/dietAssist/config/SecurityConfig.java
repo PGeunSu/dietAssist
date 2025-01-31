@@ -23,14 +23,13 @@ public class SecurityConfig{
 
   private final JwtFilter jwtFilter;
 
-
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((auth) ->
             auth
-                .requestMatchers("/css/**", "/js/**", "/img/**","/users/**","/auth/**", "/swagger-ui/**",
+                .requestMatchers("/user/**","/auth/**", "/swagger-ui/**",
                     "/v3/api-docs/**", "/myHandler/**","/oauth2/**").permitAll() //해당 API 의 요청 허가
                 .anyRequest().authenticated()) //이 밖에 모든 요청은 인증 필요
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

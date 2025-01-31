@@ -36,6 +36,7 @@ public class AuthService {
         .phone(dto.getPhone())
         .height(dto.getHeight())
         .weight(dto.getWeight())
+        .changed(false)
         .build();
 
     userRepository.save(user);

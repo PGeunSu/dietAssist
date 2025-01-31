@@ -38,4 +38,10 @@ public class User extends BaseEntity {
   private float height;
   private float weight;
 
+  private boolean changed; //카카오로 간편가입할 경우 비밀번호 초기화 가능
+
+  public void changePassword(String password){
+    this.password = password;
+  }
+
 }
