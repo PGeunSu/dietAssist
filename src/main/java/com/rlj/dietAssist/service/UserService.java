@@ -1,8 +1,11 @@
 package com.rlj.dietAssist.service;
 
+import static com.rlj.dietAssist.exception.ErrorCode.CONFIRM_NOT_MATCH;
+import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_DUPLICATION;
 import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
+import com.rlj.dietAssist.dto.ChangedPassword;
 import com.rlj.dietAssist.dto.UserDto;
 import com.rlj.dietAssist.dto.UserModifiedDto;
 import com.rlj.dietAssist.entity.user.User;
@@ -70,11 +73,19 @@ public class UserService {
   }
 
   @Transactional
-  public void changePassword(Long userId, String password){
+  public void changePassword(Long userId, ChangedPassword dto){
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new Exception(USER_NOT_FOUND));
 
-    user.changePassword(passwordEncoder.encode(password));
+    if (!checkPassword(dto.getPassword(), user.getPassword())){
+      throw new Exception(PASSWORD_NOT_MATCH);
+    }else if (dto.getPassword().equals(dto.getResetPassword())){
+      throw new Exception(PASSWORD_DUPLICATION);
+    }else if (!dto.getResetPassword().equals(dto.getConfirmPassword())){
+      throw new Exception(CONFIRM_NOT_MATCH);
+    }
+
+    user.changePassword(passwordEncoder.encode(dto.getResetPassword()));
 
     userRepository.save(user);
   }

@@ -1,5 +1,6 @@
 package com.rlj.dietAssist.controller;
 
+import com.rlj.dietAssist.dto.ChangedPassword;
 import com.rlj.dietAssist.dto.UserDto;
 import com.rlj.dietAssist.dto.UserModifiedDto;
 import com.rlj.dietAssist.entity.user.User;
@@ -44,15 +45,16 @@ public class UserController {
   }
 
   @PatchMapping("/{userId}/password")
-  public ResponseEntity<?> password(@PathVariable Long userId, String password) {
+  public ResponseEntity<?> password(@PathVariable Long userId, @Valid @RequestBody ChangedPassword dto) {
 
-    userService.changePassword(userId, password);
+    userService.changePassword(userId, dto);
 
     return ResponseEntity.ok("수정 완료");
   }
 
   @DeleteMapping("/{userId}/delete")
   public ResponseEntity<?> update(@PathVariable Long userId, String password) {
+
     userService.delete(userId, password);
 
     return ResponseEntity.ok("삭제 완료");
