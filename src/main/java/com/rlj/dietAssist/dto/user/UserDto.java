@@ -1,4 +1,4 @@
-package com.rlj.dietAssist.dto;
+package com.rlj.dietAssist.dto.user;
 
 import com.rlj.dietAssist.entity.user.User;
 import java.time.LocalDateTime;

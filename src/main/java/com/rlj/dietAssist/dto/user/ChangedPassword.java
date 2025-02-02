@@ -1,4 +1,4 @@
-package com.rlj.dietAssist.dto;
+package com.rlj.dietAssist.dto.user;
 
 import lombok.Data;
 

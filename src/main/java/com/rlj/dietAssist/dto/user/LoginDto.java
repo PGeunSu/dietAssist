@@ -1,8 +1,7 @@
-package com.rlj.dietAssist.dto;
+package com.rlj.dietAssist.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data

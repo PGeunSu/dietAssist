@@ -1,7 +1,7 @@
 package com.rlj.dietAssist.controller;
 
-import com.rlj.dietAssist.dto.LoginDto;
-import com.rlj.dietAssist.dto.SignUpDto;
+import com.rlj.dietAssist.dto.user.LoginDto;
+import com.rlj.dietAssist.dto.user.SignUpDto;
 import com.rlj.dietAssist.jwt.JwtDto;
 import com.rlj.dietAssist.service.AuthService;
 import jakarta.validation.Valid;

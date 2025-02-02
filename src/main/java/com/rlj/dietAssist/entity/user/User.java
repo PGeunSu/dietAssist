@@ -1,6 +1,5 @@
 package com.rlj.dietAssist.entity.user;
 
-import com.rlj.dietAssist.dto.SignUpDto;
 import com.rlj.dietAssist.entity.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,9 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter

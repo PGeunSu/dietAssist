@@ -4,14 +4,12 @@ import static com.rlj.dietAssist.exception.ErrorCode.ALREADY_REGISTER_USER;
 import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
-import com.rlj.dietAssist.dto.LoginDto;
-import com.rlj.dietAssist.dto.SignUpDto;
+import com.rlj.dietAssist.dto.user.LoginDto;
+import com.rlj.dietAssist.dto.user.SignUpDto;
 import com.rlj.dietAssist.entity.user.User;
-import com.rlj.dietAssist.exception.ErrorCode;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.jwt.JwtTokenProvider;
 import com.rlj.dietAssist.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

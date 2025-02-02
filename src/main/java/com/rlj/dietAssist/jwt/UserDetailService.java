@@ -1,4 +1,4 @@
-package com.rlj.dietAssist.service;
+package com.rlj.dietAssist.jwt;
 
 import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.repository.UserRepository;

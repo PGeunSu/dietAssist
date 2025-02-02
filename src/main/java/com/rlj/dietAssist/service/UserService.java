@@ -5,11 +5,10 @@ import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_DUPLICATION;
 import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_NOT_MATCH;
 import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
-import com.rlj.dietAssist.dto.ChangedPassword;
-import com.rlj.dietAssist.dto.UserDto;
-import com.rlj.dietAssist.dto.UserModifiedDto;
+import com.rlj.dietAssist.dto.user.ChangedPassword;
+import com.rlj.dietAssist.dto.user.UserDto;
+import com.rlj.dietAssist.dto.user.UserModifiedDto;
 import com.rlj.dietAssist.entity.user.User;
-import com.rlj.dietAssist.exception.ErrorCode;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.UserRepository;
 import jakarta.transaction.Transactional;

@@ -1,9 +1,8 @@
 package com.rlj.dietAssist.controller;
 
-import com.rlj.dietAssist.dto.ChangedPassword;
-import com.rlj.dietAssist.dto.UserDto;
-import com.rlj.dietAssist.dto.UserModifiedDto;
-import com.rlj.dietAssist.entity.user.User;
+import com.rlj.dietAssist.dto.user.ChangedPassword;
+import com.rlj.dietAssist.dto.user.UserDto;
+import com.rlj.dietAssist.dto.user.UserModifiedDto;
 import com.rlj.dietAssist.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
