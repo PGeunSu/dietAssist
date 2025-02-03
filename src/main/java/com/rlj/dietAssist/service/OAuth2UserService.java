@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class OAuth2UserService {
 
-  @Value("spring.kakao.api")
+  @Value("${spring.kakao.api}")
   private String KAKAO_CLIENT_ID;
 
   private final UserRepository userRepository;
