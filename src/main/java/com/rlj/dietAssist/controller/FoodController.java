@@ -28,4 +28,19 @@ public class FoodController {
     List<FoodDto> data = foodService.getFoodNutrient(foodName);
     return ResponseEntity.ok(data);
   }
+
+  @GetMapping("/usda/{fdcId}")
+  public ResponseEntity<?> getUsda(@PathVariable String fdcId){
+    String foodData = foodService.getUsdaFoodId(fdcId);
+    return ResponseEntity.ok(foodData);
+  }
+
+
+  @GetMapping("/usda")
+  public ResponseEntity<?> getFood(@RequestParam String foodName){
+    List<FoodDto> foodList = foodService.getUsdaFood(foodName);
+    return ResponseEntity.ok(foodList);
+  }
+
+
 }

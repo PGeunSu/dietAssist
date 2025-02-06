@@ -21,14 +21,79 @@ import org.springframework.web.client.RestTemplate;
 public class FoodService {
 
   private final String SERVICE_KEY;
+  private final String KEY;
   private final RestTemplate restTemplate;
   private final ObjectMapper objectMapper;
 
+  private static final String BASE_URL = "https://api.nal.usda.gov/fdc/v1/";
+
   public FoodService(@Value("${spring.food.api}") String apiKey,
-      RestTemplate restTemplate, ObjectMapper objectMapper) {
+      RestTemplate restTemplate, @Value("${spring.food.usda}") String key,
+      ObjectMapper objectMapper) {
     this.SERVICE_KEY = URLEncoder.encode(apiKey, StandardCharsets.UTF_8);
+    KEY = key;
     this.restTemplate = restTemplate;
     this.objectMapper = objectMapper;
+  }
+
+
+
+  //검색값 조회
+  public List<FoodDto> getUsdaFood(String foodName){
+
+    String englishText = new TranslationService().translateKoreanToEnglish(foodName);
+
+    String url = BASE_URL + "foods/search" +
+        "?query=" + englishText + "&api_key=" + KEY;
+
+    ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+    try{
+      JsonNode root = objectMapper.readTree(response.getBody());
+      JsonNode foods = root.path("foods");
+
+      List<FoodDto> foodList = new ArrayList<>();
+      for (JsonNode item : foods){
+        JsonNode nutrients = item.path("foodNutrients");
+        FoodDto foodDto = new FoodDto();
+
+        foodDto.setId(item.path("fdcId").asLong());
+        foodDto.setFoodName(item.path("description").asText());
+        foodDto.setEnergy(getNutrientValue(nutrients, 1008));  // Energy (kcal)
+        foodDto.setCarbohydrate(getNutrientValue(nutrients, 1005)); // Carbohydrates (g)
+        foodDto.setSugar(getNutrientValue(nutrients, 2000)); // Sugars (g)
+        foodDto.setProtein(getNutrientValue(nutrients, 1003)); // Protein (g)
+        foodDto.setFat(getNutrientValue(nutrients, 1004)); // Total Fat (g)
+        foodDto.setSaturatedFat(getNutrientValue(nutrients, 1258)); // Saturated Fat (g)
+        foodDto.setUnSaturatedFat(getNutrientValue(nutrients, 1292)); // Unsaturated Fat (g)
+
+        foodList.add(foodDto);
+      }
+      return foodList;
+
+    }catch (Exception e){
+      e.printStackTrace();
+      return List.of();
+    }
+  }
+
+  //특정 ID 조회
+  public String getUsdaFoodId(String foodId){
+
+    String url = BASE_URL + "food/" + foodId + "?api_key=" + KEY;
+
+    return restTemplate.getForEntity(url, String.class).getBody();
+
+  }
+
+
+  private float getNutrientValue(JsonNode nutrients, int nutrientId) {
+    for (JsonNode nutrient : nutrients) {
+      if (nutrient.path("nutrientId").asInt() == nutrientId) {
+        return (float) nutrient.path("value").asDouble();
+      }
+    }
+    return 0.0f; // 값이 없으면 0 반환
   }
 
 
@@ -36,7 +101,7 @@ public class FoodService {
     String url = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo01/getFoodNtrCpntDbInq01"
         + "?serviceKey=" + SERVICE_KEY
         + "&numOfRows=10"
-        + "&pageNo=2"
+        + "&pageNo=1"
         + "&type=json"
         + "&FOOD_NM_KR=" + URLEncoder.encode(foodName, StandardCharsets.UTF_8);
 
