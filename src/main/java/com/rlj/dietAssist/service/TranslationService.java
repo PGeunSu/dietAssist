@@ -12,9 +12,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@NoArgsConstructor(force = true)
+
+@Service
 public class TranslationService {
 
   private final String CLIENT_ID;
@@ -24,7 +26,7 @@ public class TranslationService {
 
 
   public TranslationService(
-      @Value("${spring.trans.id}") String clientId, @Value("${spring.trans.api}") String clientKey,
+      @Value("${spring.api.transId}") String clientId, @Value("${spring.api.transKey}") String clientKey,
       RestTemplate restTemplate, ObjectMapper objectMapper) {
     this.CLIENT_ID = clientId;
     this.CLIENT_KEY = clientKey;

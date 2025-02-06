@@ -24,16 +24,20 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@RequiredArgsConstructor
 public class OAuth2UserService {
 
-  @Value("${spring.kakao.api}")
-  private String KAKAO_CLIENT_ID;
-
+  private final String KAKAO_CLIENT_ID;
   private final UserRepository userRepository;
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
 
+  public OAuth2UserService(@Value("${spring.api.kakao}")String KAKAO_CLIENT_ID, UserRepository userRepository,
+      JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
+    this.KAKAO_CLIENT_ID = KAKAO_CLIENT_ID;
+    this.userRepository = userRepository;
+    this.jwtTokenProvider = jwtTokenProvider;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   public String kakaoLogin(String code){
 // 1. 카카오에서 액세스 토큰 요청

@@ -24,16 +24,18 @@ public class FoodService {
   private final String KEY;
   private final RestTemplate restTemplate;
   private final ObjectMapper objectMapper;
+  private final TranslationService translationService;
 
   private static final String BASE_URL = "https://api.nal.usda.gov/fdc/v1/";
 
-  public FoodService(@Value("${spring.food.api}") String apiKey,
-      RestTemplate restTemplate, @Value("${spring.food.usda}") String key,
-      ObjectMapper objectMapper) {
+  public FoodService(@Value("${spring.api.food}") String apiKey,
+      RestTemplate restTemplate, @Value("${spring.api.usda}") String key,
+      ObjectMapper objectMapper, TranslationService translationService) {
     this.SERVICE_KEY = URLEncoder.encode(apiKey, StandardCharsets.UTF_8);
     KEY = key;
     this.restTemplate = restTemplate;
     this.objectMapper = objectMapper;
+    this.translationService = translationService;
   }
 
 
@@ -41,7 +43,7 @@ public class FoodService {
   //검색값 조회
   public List<FoodDto> getUsdaFood(String foodName){
 
-    String englishText = new TranslationService().translateKoreanToEnglish(foodName);
+    String englishText = translationService.translateKoreanToEnglish(foodName);
 
     String url = BASE_URL + "foods/search" +
         "?query=" + englishText + "&api_key=" + KEY;

@@ -17,7 +17,7 @@ public class JwtTokenProvider {
 
   private final long EXPIRATION_TIME = 1000L * 60 * 60 * 24; //1시간
 
-  public JwtTokenProvider(@Value("${spring.jwt.secret}") String secret){
+  public JwtTokenProvider(@Value("${spring.api.jwt}") String secret){
     byte[] keyBytes = Decoders.BASE64URL.decode(secret);
     this.key =  Keys.hmacShaKeyFor(keyBytes);
   }
