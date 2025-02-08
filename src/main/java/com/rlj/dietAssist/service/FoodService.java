@@ -39,9 +39,8 @@ public class FoodService {
   }
 
 
-
   //검색값 조회
-  public List<FoodDto> getUsdaFood(String foodName){
+  public List<FoodDto> getUsdaFood(String foodName) {
 
     String englishText = translationService.translateKoreanToEnglish(foodName);
 
@@ -50,17 +49,18 @@ public class FoodService {
 
     ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 
-    try{
+    try {
       JsonNode root = objectMapper.readTree(response.getBody());
       JsonNode foods = root.path("foods");
 
       List<FoodDto> foodList = new ArrayList<>();
-      for (JsonNode item : foods){
+      for (JsonNode item : foods) {
         JsonNode nutrients = item.path("foodNutrients");
         FoodDto foodDto = new FoodDto();
 
         foodDto.setId(item.path("fdcId").asLong());
         foodDto.setFoodName(item.path("description").asText());
+        foodDto.setWeight(100);
         foodDto.setEnergy(getNutrientValue(nutrients, 1008));  // Energy (kcal)
         foodDto.setCarbohydrate(getNutrientValue(nutrients, 1005)); // Carbohydrates (g)
         foodDto.setSugar(getNutrientValue(nutrients, 2000)); // Sugars (g)
@@ -73,14 +73,14 @@ public class FoodService {
       }
       return foodList;
 
-    }catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
       return List.of();
     }
   }
 
   //특정 ID 조회
-  public String getUsdaFoodId(String foodId){
+  public String getUsdaFoodId(String foodId) {
 
     String url = BASE_URL + "food/" + foodId + "?api_key=" + KEY;
 
@@ -97,69 +97,4 @@ public class FoodService {
     }
     return 0.0f; // 값이 없으면 0 반환
   }
-
-
-  public List<FoodDto> getFoodNutrient(String foodName) throws URISyntaxException {
-    String url = "https://apis.data.go.kr/1471000/FoodNtrCpntDbInfo01/getFoodNtrCpntDbInq01"
-        + "?serviceKey=" + SERVICE_KEY
-        + "&numOfRows=10"
-        + "&pageNo=1"
-        + "&type=json"
-        + "&FOOD_NM_KR=" + URLEncoder.encode(foodName, StandardCharsets.UTF_8);
-
-    URI uri = new URI(url);
-
-    // 요청 엔터티 생성
-    HttpEntity<String> entity = new HttpEntity<>(new HttpHeaders());
-
-    ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, entity,
-        String.class);
-
-    // 받은 JSON 문자열을 ObjectMapper로 파싱
-    ObjectMapper objectMapper = new ObjectMapper();
-    List<FoodDto> foodDtoList = new ArrayList<>();
-
-    try {
-      JsonNode responseBody = objectMapper.readTree(response.getBody());
-      JsonNode items = responseBody.path("body").path("items");
-
-      if (items.isArray() && !items.isEmpty()) {
-        for (JsonNode item : items) {
-          FoodDto foodDto = new FoodDto();
-          foodDto.setId(item.path("NUM").asLong());
-          foodDto.setFoodName(item.path("FOOD_NM_KR").asText());
-          foodDto.setEnergy(getFloatValue(item, "AMT_NUM1"));
-          foodDto.setCarbohydrate(getFloatValue(item, "AMT_NUM7"));
-          foodDto.setSugar(getFloatValue(item, "AMT_NUM8"));
-          foodDto.setProtein(getFloatValue(item, "AMT_NUM3"));
-          foodDto.setFat(getFloatValue(item, "AMT_NUM4"));
-          foodDto.setSaturatedFat(getFloatValue(item, "AMT_NUM25"));
-          foodDto.setUnSaturatedFat(getFloatValue(item, "AMT_NUM62"));
-
-          foodDtoList.add(foodDto);
-        }
-      }else {
-        System.out.println("No items found in the response.");
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return foodDtoList;
-  }
-
-  private float getFloatValue(JsonNode node, String fieldName) {
-    JsonNode fieldNode = node.path(fieldName);
-    if (fieldNode.isMissingNode()) {
-      return 0.0f;  // 기본값
-    }
-    try {
-      return fieldNode.asText().isEmpty() ? 0.0f : Float.parseFloat(fieldNode.asText());
-    } catch (NumberFormatException e) {
-      return 0.0f;  // 숫자 형식 오류 처리
-    }
-  }
-
 }
-

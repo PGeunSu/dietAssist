@@ -7,6 +7,7 @@ public class FoodDto {
 
   private Long id;
   private String foodName;
+  private float weight;
   private float energy;
   private float carbohydrate;
   private float sugar;

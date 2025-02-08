@@ -22,13 +22,6 @@ public class FoodController {
   private final FoodService foodService;
 
 
-
-  @GetMapping("/{foodName}")
-  public ResponseEntity<?> getFoodNutrient(@PathVariable String foodName) throws URISyntaxException {
-    List<FoodDto> data = foodService.getFoodNutrient(foodName);
-    return ResponseEntity.ok(data);
-  }
-
   @GetMapping("/usda/{fdcId}")
   public ResponseEntity<?> getUsda(@PathVariable String fdcId){
     String foodData = foodService.getUsdaFoodId(fdcId);
