@@ -6,8 +6,14 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,6 +26,27 @@ public class JwtTokenProvider {
   public JwtTokenProvider(@Value("${spring.api.jwt}") String secret){
     byte[] keyBytes = Decoders.BASE64URL.decode(secret);
     this.key =  Keys.hmacShaKeyFor(keyBytes);
+  }
+
+  //Authentication 객체 생성
+  public Authentication getAuthentication(String token) {
+    Claims claims = Jwts.parserBuilder().setSigningKey(key).build()
+        .parseClaimsJws(token).getBody();
+
+    Object rolesObject = claims.get("roles");
+    String userName = claims.getSubject();
+
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    if (rolesObject instanceof List<?>) {
+      authorities = ((List<?>) rolesObject).stream()
+          .filter(String.class::isInstance) // String 타입인지 확인
+          .map(role -> new SimpleGrantedAuthority((String) role))
+          .toList();
+
+    }
+
+    User principal = new User(userName, "", authorities);
+    return new UsernamePasswordAuthenticationToken(principal, token, authorities);
   }
 
   //JWT 생성
