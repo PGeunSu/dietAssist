@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EntityListeners(value = AuditingEntityListener.class)
 public class Food extends BaseEntity {
 
@@ -27,14 +28,12 @@ public class Food extends BaseEntity {
   private Long id;
 
   private String name;
+  private float weight;
   private float energy;
   private float carbohydrate;
   private float sugar;
   private float protein;
-
   private float totalFat;
-  private float saturatedFat; //포화지방
-  private float unSaturatedFat; //불포화지방
 
 
 }

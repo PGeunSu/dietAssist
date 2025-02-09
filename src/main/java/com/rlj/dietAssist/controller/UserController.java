@@ -56,7 +56,7 @@ public class UserController {
 
     userService.delete(userId, password);
 
-    return ResponseEntity.ok("삭제 완료");
+    return ResponseEntity.noContent().build();
   }
 
 

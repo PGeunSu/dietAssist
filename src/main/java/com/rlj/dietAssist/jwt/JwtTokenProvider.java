@@ -63,15 +63,6 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  // JWT 에서 사용자 이름 추출
-  public String getUsernameFromToken(String token) {
-    return Jwts.parserBuilder()
-        .setSigningKey(key).build()
-        .parseClaimsJws(token)
-        .getBody()
-        .getSubject();
-  }
-
   // JWT 유효성 확인
   public boolean validateToken(String token) {
     try {

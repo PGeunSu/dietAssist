@@ -4,6 +4,7 @@ import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.jwt.JwtTokenProvider;
 import com.rlj.dietAssist.dto.KakaoUserInfoDto;
 import com.rlj.dietAssist.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,6 +58,7 @@ public class OAuth2UserService {
 
   }
 
+  @Transactional
   private User registerNewUser(KakaoUserInfoDto kakaoUser) {
     User newUser = User.builder()
         .email(kakaoUser.getEmail())

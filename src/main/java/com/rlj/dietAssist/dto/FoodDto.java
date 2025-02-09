@@ -12,10 +12,9 @@ public class FoodDto {
   private float carbohydrate;
   private float sugar;
   private float protein;
-  private float fat;
+  private float totalFat;
 
-  private float saturatedFat; //포화지방
-  private float unSaturatedFat; //불포화지방
+
 
 
 }

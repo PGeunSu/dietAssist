@@ -22,17 +22,25 @@ public class FoodController {
   private final FoodService foodService;
 
 
-  @GetMapping("/usda/{fdcId}")
+  @GetMapping("/nutrient/{fdcId}")
   public ResponseEntity<?> getUsda(@PathVariable String fdcId){
-    String foodData = foodService.getUsdaFoodId(fdcId);
+    String foodData = foodService.getFoodIdNutrient(fdcId);
     return ResponseEntity.ok(foodData);
   }
 
 
-  @GetMapping("/usda")
+  @GetMapping("/nutrient")
   public ResponseEntity<?> getFood(@RequestParam String foodName){
-    List<FoodDto> foodList = foodService.getUsdaFood(foodName);
+    List<FoodDto> foodList = foodService.getFoodNutrients(foodName);
     return ResponseEntity.ok(foodList);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<?> saveFoodNutrient(@PathVariable Long id, @RequestParam String foodName){
+
+    foodService.saveFoodNutrient(id, foodName);
+
+    return ResponseEntity.ok("저장 완료");
   }
 
 

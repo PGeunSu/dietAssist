@@ -10,6 +10,7 @@ import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.jwt.JwtTokenProvider;
 import com.rlj.dietAssist.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class AuthService {
       throw new Exception(PASSWORD_NOT_MATCH);
     }
 
-    return jwtTokenProvider.generateToken(user.getEmail());
+    return jwtTokenProvider.generateToken(user.getId(), user.getEmail(), user.getName());
   }
 
 }
