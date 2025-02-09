@@ -20,9 +20,11 @@ public class UserDetailService implements UserDetailsService {
     User user = userRepository.findByEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
 
-    return new org.springframework.security.core.userdetails.User(
+    return new CustomUserDetails(
+        user.getId(),
         user.getEmail(),
         user.getPassword(),
+        user.getName(),
         List.of()
     );
   }

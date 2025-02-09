@@ -53,7 +53,7 @@ public class OAuth2UserService {
         .orElseGet(() -> registerNewUser(kakaoUser));
 
     // 4. JWT 토큰 생성 및 반환
-    return jwtTokenProvider.generateToken(user.getEmail());
+    return jwtTokenProvider.generateToken(user.getId(), user.getEmail(), user.getName());
 
   }
 

@@ -35,6 +35,8 @@ public class JwtTokenProvider {
 
     Object rolesObject = claims.get("roles");
     String userName = claims.getSubject();
+    Long userId = claims.get("id", Long.class);
+    String nickname = claims.get("nickname", String.class);
 
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
     if (rolesObject instanceof List<?>) {
@@ -45,16 +47,18 @@ public class JwtTokenProvider {
 
     }
 
-    User principal = new User(userName, "", authorities);
+    CustomUserDetails principal = new CustomUserDetails(userId, userName, "", nickname, authorities);
     return new UsernamePasswordAuthenticationToken(principal, token, authorities);
   }
 
   //JWT 생성
-  public String generateToken(String username){
+  public String generateToken(Long userId, String username, String nickname) {
     return Jwts.builder()
-        .setSubject(username)
+        .setSubject(username)  // 이메일 (기본 subject)
+        .claim("id", userId)   // 사용자 ID 추가
+        .claim("nickname", nickname)  // 닉네임 추가
         .setIssuedAt(new Date())
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료 시간 설정
         .signWith(key)
         .compact();
   }
