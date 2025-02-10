@@ -2,15 +2,19 @@ package com.rlj.dietAssist.service;
 
 import static com.rlj.dietAssist.exception.ErrorCode.ALREADY_EXISTING_FOOD;
 import static com.rlj.dietAssist.exception.ErrorCode.FOOD_NOT_FOUND;
+import static com.rlj.dietAssist.exception.ErrorCode.GRAM_UNIT_ERROR;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rlj.dietAssist.dto.FoodDto;
+import com.rlj.dietAssist.dto.FoodMacroDto;
 import com.rlj.dietAssist.entity.diet.Food;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.FoodRepository;
 import jakarta.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -130,6 +134,45 @@ public class FoodService {
 
     foodRepository.save(food);
 
+  }
+
+  //그램수 단위별 값 확인
+  public FoodMacroDto getMacronutrients(Long foodId, int weight){
+
+    Food food = foodRepository.findById(foodId)
+        .orElseThrow(() -> new Exception(FOOD_NOT_FOUND));
+
+    //10그램 이상 1kg 이하,  10그램 단위로만 확인 가능
+    if (weight < 10 || weight > 1000 || weight % 10 != 0){
+      throw new Exception(GRAM_UNIT_ERROR);
+    }
+
+    FoodMacroDto macroDto = FoodMacroDto.from(food);
+
+    macroDto.setWeight(getMacro(macroDto.getWeight(), weight));
+    macroDto.setEnergy(getMacro(macroDto.getEnergy(), weight));
+    macroDto.setCarbohydrate(getMacro(macroDto.getCarbohydrate(), weight));
+    macroDto.setProtein(getMacro(macroDto.getProtein(), weight));
+    macroDto.setTotalFat(getMacro(macroDto.getTotalFat(), weight));
+    macroDto.setSugar(getMacro(macroDto.getSugar(), weight));
+
+    return macroDto;
+  }
+
+  private float getMacro(float nutrient, int weight) {
+
+    //값이 0 이면 0 리턴
+    if (nutrient == 0){
+      return 0.0f;
+    }
+
+    // 부동소수점 오차 방지를 위한 BigDecimal 사용
+    BigDecimal nutrientBD = BigDecimal.valueOf(nutrient);
+    BigDecimal ratio = BigDecimal.valueOf(weight)
+        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+    //소수점 한자리까지 반올림한 후 float 변환
+    return nutrientBD.multiply(ratio).setScale(1, RoundingMode.HALF_UP).floatValue();
   }
 
 

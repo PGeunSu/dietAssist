@@ -2,6 +2,7 @@ package com.rlj.dietAssist.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.rlj.dietAssist.dto.FoodDto;
+import com.rlj.dietAssist.dto.FoodMacroDto;
 import com.rlj.dietAssist.service.FoodService;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -21,17 +22,19 @@ public class FoodController {
 
   private final FoodService foodService;
 
-
-  @GetMapping("/nutrient/{fdcId}")
-  public ResponseEntity<?> getUsda(@PathVariable String fdcId){
-    String foodData = foodService.getFoodIdNutrient(fdcId);
-    return ResponseEntity.ok(foodData);
-  }
+//
+//  @GetMapping("/nutrient/{fdcId}")
+//  public ResponseEntity<?> getUsda(@PathVariable String fdcId){
+//    String foodData = foodService.getFoodIdNutrient(fdcId);
+//    return ResponseEntity.ok(foodData);
+//  }
 
 
   @GetMapping("/nutrient")
   public ResponseEntity<?> getFood(@RequestParam String foodName){
+
     List<FoodDto> foodList = foodService.getFoodNutrients(foodName);
+
     return ResponseEntity.ok(foodList);
   }
 
@@ -41,6 +44,14 @@ public class FoodController {
     foodService.saveFoodNutrient(id, foodName);
 
     return ResponseEntity.ok("저장 완료");
+  }
+
+  @GetMapping("/{id}/macro")
+  public ResponseEntity<?> getMacronutrient(@PathVariable Long id, @RequestParam int weight){
+
+    FoodMacroDto macroDto = foodService.getMacronutrients(id, weight);
+
+    return ResponseEntity.ok(macroDto);
   }
 
 

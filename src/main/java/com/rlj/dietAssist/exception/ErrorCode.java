@@ -20,6 +20,8 @@ public enum ErrorCode {
   //Food
   FOOD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식품정보입니다."),
   ALREADY_EXISTING_FOOD(HttpStatus.BAD_REQUEST, "이미 존재하는 식품정보입니다."),
+  GRAM_UNIT_ERROR(HttpStatus.BAD_REQUEST, "그람수는 10g 단위로 확인 가능합니다"),
+
 
 
   //Favorite
