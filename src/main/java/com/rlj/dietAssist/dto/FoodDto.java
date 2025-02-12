@@ -15,6 +15,4 @@ public class FoodDto {
   private float totalFat;
 
 
-
-
 }

@@ -109,7 +109,7 @@ public class FoodService {
     return 0.0f; // 값이 없으면 0 반환
   }
 
-  //원하는 식품 저장
+  //검색값에 원하는 식품 저장
   @Transactional
   public void saveFoodNutrient(Long id, String name){
 

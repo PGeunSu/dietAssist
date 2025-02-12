@@ -30,7 +30,7 @@ public class SecurityConfig{
         .authorizeHttpRequests((auth) ->
             auth
                 .requestMatchers("/user/**","/auth/**", "/swagger-ui/**",
-                    "/v3/api-docs/**", "/myHandler/**","/oauth2/**","/api/food/**", "/v1/**").permitAll() //해당 API 의 요청 허가
+                    "/v3/api-docs/**", "/myHandler/**","/oauth2/**","/api/food/**","/api/meals/**", "/v1/**").permitAll() //해당 API 의 요청 허가
                 .anyRequest().authenticated()) //이 밖에 모든 요청은 인증 필요
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .sessionManagement(
