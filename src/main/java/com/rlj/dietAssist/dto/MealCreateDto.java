@@ -8,5 +8,6 @@ public class MealCreateDto {
 
   private List<Long> foodIds;
   private List<Integer> weight;
+  private String mealName;
 
 }

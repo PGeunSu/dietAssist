@@ -24,10 +24,14 @@ public enum ErrorCode {
   AMOUNT_NOT_MATCH(HttpStatus.BAD_REQUEST, "식품과 중량의 수량이 일치하지 않습니다"),
 
 
-
   //Favorite
   FAVORITE_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 즐겨찾기 항목입니다."),
-  ALREADY_EXISTING_FAVORITE(HttpStatus.BAD_REQUEST, "즐겨찾기 항목중 동일한 정보가 존재합니다.");
+  ALREADY_EXISTING_FAVORITE(HttpStatus.BAD_REQUEST, "즐겨찾기 항목중 동일한 정보가 존재합니다."),
+
+  //Meal
+  MEAL_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식단 정보입니다."),
+  MEAL_FOOD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식단 정보입니다.");
+
 
   private final HttpStatus httpStatus;
   private final String description;

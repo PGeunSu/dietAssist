@@ -1,6 +1,7 @@
 package com.rlj.dietAssist.controller;
 
 import com.rlj.dietAssist.dto.MealCreateDto;
+import com.rlj.dietAssist.dto.MealDto;
 import com.rlj.dietAssist.dto.MealFoodDto;
 import com.rlj.dietAssist.entity.diet.Meal;
 import com.rlj.dietAssist.entity.diet.MealFood;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,15 +27,15 @@ public class MealController {
   private final MealService mealService;
 
   @PostMapping("/create")
-  public ResponseEntity<?> createMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealCreateDto mealCreateDto, String mealName){
-    Meal meal = mealService.createMeal(user.getId(), mealCreateDto.getFoodIds(), mealCreateDto.getWeight(), mealName);
+  public ResponseEntity<?> createMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealCreateDto mealCreateDto){
+    Meal meal = mealService.createMeal(user.getId(), mealCreateDto);
 
     return ResponseEntity.ok(meal);
   }
 
-  @GetMapping("/info")
-  public ResponseEntity<?> getMeal(Long mealId){
-    List<MealFoodDto> mealFoods = mealService.getMeal(mealId);
+  @GetMapping("/{mealId}/info")
+  public ResponseEntity<?> getMeal(@PathVariable Long mealId){
+    MealDto mealFoods = mealService.getMeal(mealId);
 
     return ResponseEntity.ok(mealFoods);
   }

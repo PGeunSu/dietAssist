@@ -14,8 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -67,9 +65,17 @@ public class MealFood extends BaseEntity {
     this.energy = macroDto.getEnergy();
     this.carbohydrate = macroDto.getCarbohydrate();
     this.protein = macroDto.getProtein();
-    this.fat = macroDto.getTotalFat();
+    this.fat = macroDto.getFat();
     this.sugar = macroDto.getSugar();
   }
 
-
+  public void update(Food food, FoodMacroDto macroDto) {
+    this.food = food;
+    this.weight = macroDto.getWeight();
+    this.energy = macroDto.getEnergy();
+    this.carbohydrate = macroDto.getCarbohydrate();
+    this.protein = macroDto.getProtein();
+    this.fat = macroDto.getFat();
+    this.sugar = macroDto.getSugar();
+  }
 }

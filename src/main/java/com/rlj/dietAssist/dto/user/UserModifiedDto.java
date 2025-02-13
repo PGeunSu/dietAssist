@@ -2,9 +2,9 @@ package com.rlj.dietAssist.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class UserModifiedDto {
 
   @NotBlank(message = "이름은 필수 입력 값입니다.")

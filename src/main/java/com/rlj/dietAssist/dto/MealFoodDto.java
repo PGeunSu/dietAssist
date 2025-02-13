@@ -1,7 +1,7 @@
 package com.rlj.dietAssist.dto;
 
+
 import com.rlj.dietAssist.entity.diet.MealFood;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +14,7 @@ public class MealFoodDto {
   private float energy;
   private float carbohydrate;
   private float protein;
-  private float fat;
+  private float totalFat;
   private float sugar;
 
   public MealFoodDto(MealFood mealFood) {
@@ -23,10 +23,8 @@ public class MealFoodDto {
     this.energy = mealFood.getEnergy();
     this.carbohydrate = mealFood.getCarbohydrate();
     this.protein = mealFood.getProtein();
-    this.fat = mealFood.getFat();
+    this.totalFat = mealFood.getFat();
     this.sugar = mealFood.getSugar();
   }
-
-
 
 }

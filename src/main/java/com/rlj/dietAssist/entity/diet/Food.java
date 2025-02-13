@@ -33,7 +33,7 @@ public class Food extends BaseEntity {
   private float carbohydrate;
   private float sugar;
   private float protein;
-  private float totalFat;
+  private float fat;
 
 
 }

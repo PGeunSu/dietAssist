@@ -18,7 +18,7 @@ public class FoodMacroDto {
   private float carbohydrate;
   private float sugar;
   private float protein;
-  private float totalFat;
+  private float fat;
 
   public static FoodMacroDto from(Food food){
     return FoodMacroDto.builder()
@@ -28,7 +28,7 @@ public class FoodMacroDto {
         .carbohydrate(food.getCarbohydrate())
         .sugar(food.getSugar())
         .protein(food.getProtein())
-        .totalFat(food.getTotalFat())
+        .fat(food.getFat())
         .build();
   }
 
