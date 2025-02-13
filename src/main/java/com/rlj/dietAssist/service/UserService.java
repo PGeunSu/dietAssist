@@ -9,6 +9,7 @@ import com.rlj.dietAssist.dto.user.ChangedPassword;
 import com.rlj.dietAssist.dto.user.UserDto;
 import com.rlj.dietAssist.dto.user.UserModifiedDto;
 import com.rlj.dietAssist.entity.user.User;
+import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -22,12 +23,12 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final BaseException baseException;
 
   //회원 상세 정보
   public UserDto detail(Long userId){
 
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new Exception(USER_NOT_FOUND));
+    User user = baseException.getUser(userId);
 
     return UserDto.of(user);
   }
@@ -36,8 +37,7 @@ public class UserService {
   @Transactional
   public void update(Long userId, UserModifiedDto dto){
 
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new Exception(USER_NOT_FOUND));
+    User user = baseException.getUser(userId);
 
     //비밀번호 일치 여부 확인(카카오 간편가입일 경우 비밀번호를 묻지않음)
     if (!checkPassword(dto.getPassword(), user.getPassword()) && !user.isChanged()){
@@ -60,8 +60,7 @@ public class UserService {
   //회원 삭제
   @Transactional
   public void delete(Long userId, String password){
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new Exception(USER_NOT_FOUND));
+    User user = baseException.getUser(userId);
 
     //비밀번호 일치 여부 확인
     if (!checkPassword(password, user.getPassword())){
@@ -73,8 +72,7 @@ public class UserService {
 
   @Transactional
   public void changePassword(Long userId, ChangedPassword dto){
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new Exception(USER_NOT_FOUND));
+    User user = baseException.getUser(userId);
 
     if (!checkPassword(dto.getPassword(), user.getPassword())){
       throw new Exception(PASSWORD_NOT_MATCH);

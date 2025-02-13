@@ -11,6 +11,7 @@ import com.rlj.dietAssist.dto.FoodDto;
 import com.rlj.dietAssist.entity.diet.Food;
 import com.rlj.dietAssist.entity.favorite.Favorite;
 import com.rlj.dietAssist.entity.user.User;
+import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.FavoriteRepository;
 import com.rlj.dietAssist.repository.FoodRepository;
@@ -26,16 +27,12 @@ import org.springframework.stereotype.Service;
 public class FavoriteService {
 
   private final FavoriteRepository favoriteRepository;
-  private final FoodRepository foodRepository;
-  private final UserRepository userRepository;
+  private final BaseException baseException;
 
   @Transactional
   public FavoriteDto addFavorite(Long userId, Long foodId, String notes) {
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new Exception(USER_NOT_FOUND));
-
-    Food food = foodRepository.findById(foodId)
-        .orElseThrow(() -> new Exception(FOOD_NOT_FOUND));
+    User user = baseException.getUser(userId);
+    Food food = baseException.getFood(foodId);
 
     //식품은 하나의 즐겨찾기만 가능
     if (favoriteRepository.existsByFoodId(foodId)){

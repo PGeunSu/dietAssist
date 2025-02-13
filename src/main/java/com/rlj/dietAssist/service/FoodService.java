@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rlj.dietAssist.dto.FoodDto;
 import com.rlj.dietAssist.dto.FoodMacroDto;
 import com.rlj.dietAssist.entity.diet.Food;
+import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.FoodRepository;
 import jakarta.transaction.Transactional;
@@ -32,17 +33,19 @@ public class FoodService {
   private final TranslationService translationService;
 
   private final FoodRepository foodRepository;
+  private final BaseException baseException;
 
   private static final String BASE_URL = "https://api.nal.usda.gov/fdc/v1/";
 
   public FoodService( @Value("${spring.api.usda}") String key, RestTemplate restTemplate,
       ObjectMapper objectMapper, TranslationService translationService,
-      FoodRepository foodRepository) {
+      FoodRepository foodRepository, BaseException baseException) {
     this.API_KEY = key;
     this.restTemplate = restTemplate;
     this.objectMapper = objectMapper;
     this.translationService = translationService;
     this.foodRepository = foodRepository;
+    this.baseException = baseException;
   }
 
 
@@ -78,7 +81,7 @@ public class FoodService {
         foodDto.setCarbohydrate(getNutrientValue(nutrients, 1005)); // Carbohydrates (g)
         foodDto.setSugar(getNutrientValue(nutrients, 2000)); // Sugars (g)
         foodDto.setProtein(getNutrientValue(nutrients, 1003)); // Protein (g)
-        foodDto.setTotalFat(getNutrientValue(nutrients, 1004)); // Total Fat (g)
+        foodDto.setFat(getNutrientValue(nutrients, 1004)); // Total Fat (g)
 
         foodList.add(foodDto);
         cnt++;
@@ -129,7 +132,7 @@ public class FoodService {
         .carbohydrate(foodDto.getCarbohydrate())
         .sugar(foodDto.getSugar())
         .protein(foodDto.getProtein())
-        .totalFat(foodDto.getTotalFat())
+        .fat(foodDto.getFat())
         .build();
 
     foodRepository.save(food);
@@ -139,8 +142,7 @@ public class FoodService {
   //그램수 단위별 값 확인
   public FoodMacroDto getMacronutrients(Long foodId, int weight){
 
-    Food food = foodRepository.findById(foodId)
-        .orElseThrow(() -> new Exception(FOOD_NOT_FOUND));
+    Food food = baseException.getFood(foodId);
 
     //10그램 이상 1kg 이하,  10그램 단위로만 확인 가능
     if (weight < 10 || weight > 1000 || weight % 10 != 0){
@@ -153,7 +155,7 @@ public class FoodService {
     macroDto.setEnergy(getMacro(macroDto.getEnergy(), weight));
     macroDto.setCarbohydrate(getMacro(macroDto.getCarbohydrate(), weight));
     macroDto.setProtein(getMacro(macroDto.getProtein(), weight));
-    macroDto.setTotalFat(getMacro(macroDto.getTotalFat(), weight));
+    macroDto.setFat(getMacro(macroDto.getFat(), weight));
     macroDto.setSugar(getMacro(macroDto.getSugar(), weight));
 
     return macroDto;
