@@ -1,6 +1,6 @@
 package com.rlj.dietAssist.entity.diet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.rlj.dietAssist.entity.base.BaseEntity;
 import com.rlj.dietAssist.entity.user.User;
 import jakarta.persistence.CascadeType;
@@ -13,10 +13,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,15 +24,17 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
-public class Meal extends BaseEntity {
+public class DailyDiet extends BaseEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -40,10 +42,10 @@ public class Meal extends BaseEntity {
   @OnDelete(action = OnDeleteAction.CASCADE) // 회원의 계정이 삭제되었을 경우 같이 삭제
   private User user;
 
-  @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<MealFood> mealFoods = new ArrayList<>();
+  @OneToMany(mappedBy = "dailyDiet", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<DailyMeal> meals = new ArrayList<>();
 
-  private String name;
+  private LocalDate date;
 
   private float totalEnergy;
   private float totalCarbohydrate;
@@ -51,24 +53,26 @@ public class Meal extends BaseEntity {
   private float totalFat;
   private float totalSugar;
 
-  public void addMealFood(MealFood mealFood) {
-    mealFoods.add(mealFood);
-    mealFood.setMeal(this);
+  public void addMeal(DailyMeal dailyMeal) {
+    meals.add(dailyMeal);
+    dailyMeal.setDailyDiet(this);
     updateNutrients();
   }
 
-  public void removeMealFood(MealFood mealFood) {
-    mealFoods.remove(mealFood);
-    mealFood.setMeal(null);
+  public void removeMeal(DailyMeal dailyMeal) {
+    meals.remove(dailyMeal);
+    dailyMeal.setDailyDiet(null);
     updateNutrients();
   }
 
+  // 영양소 값 업데이트 메서드
   public void updateNutrients() {
-    this.totalEnergy = (float) mealFoods.stream().mapToDouble(MealFood::getEnergy).sum();
-    this.totalCarbohydrate = (float) mealFoods.stream().mapToDouble(MealFood::getCarbohydrate).sum();
-    this.totalProtein = (float) mealFoods.stream().mapToDouble(MealFood::getProtein).sum();
-    this.totalFat = (float) mealFoods.stream().mapToDouble(MealFood::getFat).sum();
-    this.totalSugar = (float) mealFoods.stream().mapToDouble(MealFood::getSugar).sum();
+    this.totalEnergy = (float) meals.stream().mapToDouble(DailyMeal::getTotalEnergy).sum();
+    this.totalCarbohydrate = (float) meals.stream().mapToDouble(DailyMeal::getTotalCarbohydrate).sum();
+    this.totalProtein = (float) meals.stream().mapToDouble(DailyMeal::getTotalProtein).sum();
+    this.totalFat = (float) meals.stream().mapToDouble(DailyMeal::getTotalFat).sum();
+    this.totalSugar = (float) meals.stream().mapToDouble(DailyMeal::getTotalSugar).sum();
   }
+
 
 }

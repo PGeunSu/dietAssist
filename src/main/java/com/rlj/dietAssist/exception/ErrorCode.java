@@ -30,7 +30,12 @@ public enum ErrorCode {
 
   //Meal
   MEAL_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식단 정보입니다."),
-  MEAL_FOOD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식단 정보입니다.");
+  MEAL_FOOD_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 식단 정보입니다."),
+
+  //DailyMeal
+  DAILY_DIET_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 하루 식단 정보입니다."),
+  DAILY_MEAL_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 하루 식단 정보입니다."),
+  DAILY_MEAL_OVER_SIZE(HttpStatus.BAD_REQUEST, "하루의 추가할 수 있는 식단은 최대 7개 입니다.");
 
 
   private final HttpStatus httpStatus;

@@ -78,4 +78,5 @@ public class MealFood extends BaseEntity {
     this.fat = macroDto.getFat();
     this.sugar = macroDto.getSugar();
   }
+
 }
