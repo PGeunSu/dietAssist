@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rlj.dietAssist.dto.FoodDto;
 import com.rlj.dietAssist.dto.FoodMacroDto;
+import com.rlj.dietAssist.dto.RegisterFood;
 import com.rlj.dietAssist.entity.diet.Food;
 import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
@@ -34,18 +35,20 @@ public class FoodService {
 
   private final FoodRepository foodRepository;
   private final BaseException baseException;
+  private final FavoriteService favoriteService;
 
   private static final String BASE_URL = "https://api.nal.usda.gov/fdc/v1/";
 
   public FoodService( @Value("${spring.api.usda}") String key, RestTemplate restTemplate,
       ObjectMapper objectMapper, TranslationService translationService,
-      FoodRepository foodRepository, BaseException baseException) {
+      FoodRepository foodRepository, BaseException baseException, FavoriteService favoriteService) {
     this.API_KEY = key;
     this.restTemplate = restTemplate;
     this.objectMapper = objectMapper;
     this.translationService = translationService;
     this.foodRepository = foodRepository;
     this.baseException = baseException;
+    this.favoriteService = favoriteService;
   }
 
 
@@ -94,15 +97,6 @@ public class FoodService {
     }
   }
 
-  //특정 ID 조회
-  public String getFoodIdNutrient(String foodId) {
-
-    String url = BASE_URL + "food/" + foodId + "?api_key=" + API_KEY;
-
-    return restTemplate.getForEntity(url, String.class).getBody();
-
-  }
-
   private float getNutrientValue(JsonNode nutrients, int nutrientId) {
     for (JsonNode nutrient : nutrients) {
       if (nutrient.path("nutrientId").asInt() == nutrientId) {
@@ -110,6 +104,31 @@ public class FoodService {
       }
     }
     return 0.0f; // 값이 없으면 0 반환
+  }
+
+
+  //직접 식품 저장
+  @Transactional
+  public void selfFoodNutrient(Long userId, RegisterFood registerFood){
+
+    if (foodRepository.existsByName(registerFood.getFoodName())){
+      throw new Exception(ALREADY_EXISTING_FOOD);
+    }
+
+    Food food = Food.builder()
+        .name(registerFood.getFoodName())
+        .weight(registerFood.getWeight())
+        .energy(registerFood.getEnergy())
+        .carbohydrate(registerFood.getCarbohydrate())
+        .sugar(registerFood.getSugar())
+        .protein(registerFood.getProtein())
+        .fat(registerFood.getFat())
+        .build();
+
+    Food saveFood = foodRepository.save(food);
+
+    //저장 시 자동으로 즐겨찾기
+    favoriteService.addFavorite(userId, saveFood.getId(), registerFood.getNotes());
   }
 
   //검색값에 원하는 식품 저장

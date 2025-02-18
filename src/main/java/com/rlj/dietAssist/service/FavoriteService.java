@@ -3,19 +3,14 @@ package com.rlj.dietAssist.service;
 
 import static com.rlj.dietAssist.exception.ErrorCode.ALREADY_EXISTING_FAVORITE;
 import static com.rlj.dietAssist.exception.ErrorCode.FAVORITE_NOT_FOUND;
-import static com.rlj.dietAssist.exception.ErrorCode.FOOD_NOT_FOUND;
-import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.rlj.dietAssist.dto.FavoriteDto;
-import com.rlj.dietAssist.dto.FoodDto;
 import com.rlj.dietAssist.entity.diet.Food;
 import com.rlj.dietAssist.entity.favorite.Favorite;
 import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.FavoriteRepository;
-import com.rlj.dietAssist.repository.FoodRepository;
-import com.rlj.dietAssist.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,10 +40,9 @@ public class FavoriteService {
         .notes(notes)
         .build();
 
-    Favorite saveFavorite =  favoriteRepository.save(favorite);
+      Favorite saveFavorite = favoriteRepository.save(favorite);
 
-    return FavoriteDto.from(saveFavorite);
-
+      return FavoriteDto.from(saveFavorite);
   }
 
   @Transactional
