@@ -35,6 +35,14 @@ public class FoodController {
     return ResponseEntity.ok(new RegisterFood(registerFood));
   }
 
+  @PostMapping("/save/{id}")
+  public ResponseEntity<?> saveFoodNutrient(@PathVariable Long id, @RequestParam String foodName){
+
+    FoodDto dto = foodService.saveFoodNutrient(id, foodName);
+
+    return ResponseEntity.ok(dto);
+  }
+
 
   @GetMapping("/nutrient")
   public ResponseEntity<?> getFood(@RequestParam String foodName){
@@ -44,13 +52,7 @@ public class FoodController {
     return ResponseEntity.ok(foodList);
   }
 
-  @PostMapping("/save/{id}")
-  public ResponseEntity<?> saveFoodNutrient(@PathVariable Long id, @RequestParam String foodName){
 
-    foodService.saveFoodNutrient(id, foodName);
-
-    return ResponseEntity.ok("저장 완료");
-  }
 
   @GetMapping("/{id}/macro")
   public ResponseEntity<?> getMacronutrient(@PathVariable Long id, @RequestParam int weight){

@@ -2,6 +2,7 @@ package com.rlj.dietAssist.controller;
 
 import com.rlj.dietAssist.dto.user.LoginDto;
 import com.rlj.dietAssist.dto.user.SignUpDto;
+import com.rlj.dietAssist.dto.user.UserDto;
 import com.rlj.dietAssist.jwt.JwtDto;
 import com.rlj.dietAssist.service.AuthService;
 import jakarta.validation.Valid;
@@ -20,10 +21,10 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping("/singUp")
-  public ResponseEntity<String> signUp(@Valid @RequestBody SignUpDto dto){
-    authService.signUp(dto);
+  public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto dto){
+    UserDto userDto = authService.signUp(dto);
 
-    return  ResponseEntity.ok("회원가입 성공");
+    return ResponseEntity.ok(userDto);
   }
 
   @PostMapping("/login")

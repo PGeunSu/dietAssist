@@ -6,6 +6,7 @@ import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.rlj.dietAssist.dto.user.LoginDto;
 import com.rlj.dietAssist.dto.user.SignUpDto;
+import com.rlj.dietAssist.dto.user.UserDto;
 import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.jwt.JwtTokenProvider;
@@ -23,7 +24,7 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final JwtTokenProvider jwtTokenProvider;
 
-  public void signUp(SignUpDto dto){
+  public UserDto signUp(SignUpDto dto){
     if (userRepository.existsByEmail(dto.getEmail())){
       throw new Exception(ALREADY_REGISTER_USER);
     }
@@ -40,6 +41,7 @@ public class AuthService {
 
     userRepository.save(user);
 
+    return UserDto.of(user);
   }
 
   public String login(LoginDto dto) {

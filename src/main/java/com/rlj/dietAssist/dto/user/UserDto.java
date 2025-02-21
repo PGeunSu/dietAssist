@@ -19,9 +19,6 @@ public class UserDto {
   private float height;
   private float weight;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime modifiedAt;
-
   public static UserDto of(User user){
     return UserDto.builder()
         .email(user.getEmail())
@@ -29,8 +26,6 @@ public class UserDto {
         .phone(user.getPhone())
         .height(user.getHeight())
         .weight(user.getWeight())
-        .createdAt(user.getCreatedAt())
-        .modifiedAt(user.getModifiedAt())
         .build();
   }
 

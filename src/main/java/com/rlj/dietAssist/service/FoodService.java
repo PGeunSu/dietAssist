@@ -133,7 +133,7 @@ public class FoodService {
 
   //검색값에 원하는 식품 저장
   @Transactional
-  public void saveFoodNutrient(Long id, String name){
+  public FoodDto saveFoodNutrient(Long id, String name){
 
     List<FoodDto> foodList = getFoodNutrients(name);
 
@@ -155,6 +155,8 @@ public class FoodService {
         .build();
 
     foodRepository.save(food);
+
+    return FoodDto.from(id, food);
 
   }
 

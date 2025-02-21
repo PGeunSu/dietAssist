@@ -3,7 +3,6 @@ package com.rlj.dietAssist.service;
 import static com.rlj.dietAssist.exception.ErrorCode.CONFIRM_NOT_MATCH;
 import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_DUPLICATION;
 import static com.rlj.dietAssist.exception.ErrorCode.PASSWORD_NOT_MATCH;
-import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.rlj.dietAssist.dto.user.ChangedPassword;
 import com.rlj.dietAssist.dto.user.UserDto;
@@ -35,7 +34,7 @@ public class UserService {
 
   //회원 정보 수정
   @Transactional
-  public void update(Long userId, UserModifiedDto dto){
+  public UserDto update(Long userId, UserModifiedDto dto){
 
     User user = baseException.getUser(userId);
 
@@ -55,6 +54,8 @@ public class UserService {
         .build();
 
     userRepository.save(updateUser);
+
+    return UserDto.of(updateUser);
   }
 
   //회원 삭제
