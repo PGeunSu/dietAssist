@@ -11,7 +11,6 @@ public enum ErrorCode {
   //User
   ALREADY_REGISTER_USER(HttpStatus.BAD_REQUEST, "이미 존재하는 사용자 입니다."),
   USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 사용자입니다."),
-  LOGIN_CHECK_FAIL(HttpStatus.BAD_REQUEST, "아이디와 패스워드를 확인해 주세요."),
   PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
   PASSWORD_DUPLICATION(HttpStatus.BAD_REQUEST, "사용중인 비밀번호 입니다"),
   CONFIRM_NOT_MATCH(HttpStatus.BAD_REQUEST, "확인 비밀번호가 일치하지 않습니다."),
@@ -35,7 +34,13 @@ public enum ErrorCode {
   //DailyMeal
   DAILY_DIET_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 하루 식단 정보입니다."),
   DAILY_MEAL_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 하루 식단 정보입니다."),
-  DAILY_MEAL_OVER_SIZE(HttpStatus.BAD_REQUEST, "하루의 추가할 수 있는 식단은 최대 7개 입니다.");
+  DAILY_MEAL_OVER_SIZE(HttpStatus.BAD_REQUEST, "하루의 추가할 수 있는 식단은 최대 7개 입니다."),
+
+  //WeightRecord
+  WEIGHT_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "체중 정보가 존재하지 않습니다."),
+  ALREADY_EXISTING_RECORD(HttpStatus.BAD_REQUEST, "이미 해당 날짜에 데이터가 존재합니다."),
+  ERROR_DATE(HttpStatus.BAD_REQUEST, "오늘 이후의 날짜는 입력할 수 없습니다.");
+
 
 
   private final HttpStatus httpStatus;

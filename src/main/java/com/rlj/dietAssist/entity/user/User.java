@@ -41,4 +41,8 @@ public class User extends BaseEntity {
     this.password = password;
   }
 
+  public void updateWeight(float weight){
+    this.weight = weight;
+  }
+
 }

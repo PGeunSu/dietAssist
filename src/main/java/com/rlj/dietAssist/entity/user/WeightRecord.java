@@ -9,9 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -22,8 +22,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @EntityListeners(value = AuditingEntityListener.class)
-public class weightRecord extends BaseEntity {
+public class WeightRecord extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +37,11 @@ public class weightRecord extends BaseEntity {
 
   private float weight;
 
+  private LocalDate date;
+
+  public void modifiedRecord(float weight){
+    this.weight = weight;
+    this.user.updateWeight(weight);
+  }
 
 }

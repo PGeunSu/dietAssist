@@ -7,6 +7,7 @@ import static com.rlj.dietAssist.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.rlj.dietAssist.exception.ErrorCode.MEAL_FOOD_NOT_FOUND;
 import static com.rlj.dietAssist.exception.ErrorCode.MEAL_NOT_FOUND;
 import static com.rlj.dietAssist.exception.ErrorCode.USER_NOT_FOUND;
+import static com.rlj.dietAssist.exception.ErrorCode.WEIGHT_RECORD_NOT_FOUND;
 
 import com.rlj.dietAssist.entity.diet.DailyDiet;
 import com.rlj.dietAssist.entity.diet.DailyMeal;
@@ -15,6 +16,8 @@ import com.rlj.dietAssist.entity.diet.Meal;
 import com.rlj.dietAssist.entity.diet.MealFood;
 import com.rlj.dietAssist.entity.favorite.Favorite;
 import com.rlj.dietAssist.entity.user.User;
+import com.rlj.dietAssist.entity.user.WeightRecord;
+import com.rlj.dietAssist.repository.WeightRecordRepository;
 import com.rlj.dietAssist.repository.DailyDietRepository;
 import com.rlj.dietAssist.repository.DailyMealRepository;
 import com.rlj.dietAssist.repository.FavoriteRepository;
@@ -36,6 +39,7 @@ public class BaseException {
   private final MealFoodRepository mealFoodRepository;
   private final DailyMealRepository dailyMealRepository;
   private final DailyDietRepository dailyDietRepository;
+  private final WeightRecordRepository weightRecordRepository;
 
   public void validateUserExists(Long userId) {
     if (!userRepository.existsById(userId)) {
@@ -76,6 +80,11 @@ public class BaseException {
   public DailyMeal getDailyMeal(Long dailyMealId){
     return dailyMealRepository.findById(dailyMealId)
         .orElseThrow(() -> new Exception(DAILY_MEAL_NOT_FOUND));
+  }
+
+  public WeightRecord getWeightRecord(Long weightRecordId){
+    return weightRecordRepository.findById(weightRecordId)
+        .orElseThrow(() -> new Exception(WEIGHT_RECORD_NOT_FOUND));
   }
 
 
