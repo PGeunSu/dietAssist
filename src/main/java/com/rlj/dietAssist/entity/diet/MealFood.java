@@ -2,7 +2,7 @@ package com.rlj.dietAssist.entity.diet;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.rlj.dietAssist.dto.FoodMacroDto;
+import com.rlj.dietAssist.dto.food.FoodMacroDto;
 import com.rlj.dietAssist.entity.base.BaseEntity;
 import com.rlj.dietAssist.entity.user.User;
 import jakarta.persistence.Entity;

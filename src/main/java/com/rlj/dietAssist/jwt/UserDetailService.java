@@ -1,7 +1,7 @@
 package com.rlj.dietAssist.jwt;
 
 import com.rlj.dietAssist.entity.user.User;
-import com.rlj.dietAssist.repository.UserRepository;
+import com.rlj.dietAssist.repository.user.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
