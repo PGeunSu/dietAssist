@@ -11,12 +11,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
-@Service
-public class TranslationService {
+@Component
+public class Translator {
 
   private final String CLIENT_ID;
   private final String CLIENT_KEY;
@@ -24,7 +24,7 @@ public class TranslationService {
   private final ObjectMapper objectMapper;
 
 
-  public TranslationService(
+  public Translator(
       @Value("${spring.api.transId}") String clientId, @Value("${spring.api.transKey}") String clientKey,
       RestTemplate restTemplate, ObjectMapper objectMapper) {
     this.CLIENT_ID = clientId;
