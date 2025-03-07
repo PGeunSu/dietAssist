@@ -62,7 +62,7 @@ public class UserService {
   }
 
   @Transactional
-  public void changePassword(Long userId, ChangedPassword dto){
+  public ChangedPassword changePassword(Long userId, ChangedPassword dto){
     User user = baseException.getUser(userId);
 
     if (!checkPassword(dto.getPassword(), user.getPassword())){
@@ -80,6 +80,8 @@ public class UserService {
     user.changePassword(passwordEncoder.encode(dto.getResetPassword()));
 
     userRepository.save(user);
+
+    return ChangedPassword.of(dto);
   }
 
   //비밀번호 확인

@@ -24,21 +24,21 @@ public class DailyDietController {
   private final DailyDietService dailyDietService;
 
   @PostMapping("/create")
-  public ResponseEntity<?> createDailyDiet(@AuthenticationPrincipal CustomUserDetails user, @RequestBody DailyDietCreateDto dto){
+  public ResponseEntity<DailyDietDto> createDailyDiet(@AuthenticationPrincipal CustomUserDetails user, @RequestBody DailyDietCreateDto dto){
     DailyDiet dailyDiet = dailyDietService.addDailyMeal(user.getId(), dto);
 
     return ResponseEntity.ok(new DailyDietDto(dailyDiet));
   }
 
   @GetMapping("/{dailyDietId}/info")
-  public ResponseEntity<?> getDailyMeal(@PathVariable Long dailyDietId){
+  public ResponseEntity<DailyDietDto> getDailyMeal(@PathVariable Long dailyDietId){
     DailyDietDto dailyMealDto = dailyDietService.getDailyMeal(dailyDietId);
 
     return ResponseEntity.ok(dailyMealDto);
   }
 
   @DeleteMapping("/{dailyMealId}/delete")
-  public ResponseEntity<?> deleteDailyMeal(@AuthenticationPrincipal CustomUserDetails user, Long dailDietId, @PathVariable Long dailyMealId){
+  public ResponseEntity<Void> deleteDailyMeal(@AuthenticationPrincipal CustomUserDetails user, Long dailDietId, @PathVariable Long dailyMealId){
     dailyDietService.deleteDailyMeal(user.getId(), dailDietId, dailyMealId);
 
     return ResponseEntity.noContent().build();
@@ -46,7 +46,7 @@ public class DailyDietController {
 
 
   @DeleteMapping("/{dailyDietId}/deleteAll")
-  public ResponseEntity<?> deleteDailyDiet(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long dailyDietId){
+  public ResponseEntity<Void> deleteDailyDiet(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long dailyDietId){
     dailyDietService.deleteDailyDiet(user.getId(), dailyDietId);
 
     return ResponseEntity.noContent().build();

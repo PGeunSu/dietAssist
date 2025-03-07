@@ -18,7 +18,7 @@ public class OAuth2Controller {
   private final OAuth2UserService oAuth2UserService;
 
   @GetMapping("/kakao/login")
-  public ResponseEntity<?> kakaoLogin(@RequestParam String code){
+  public ResponseEntity<JwtDto> kakaoLogin(@RequestParam String code){
     String jwtToken = oAuth2UserService.kakaoLogin(code);
 
     return ResponseEntity.ok(new JwtDto(jwtToken));

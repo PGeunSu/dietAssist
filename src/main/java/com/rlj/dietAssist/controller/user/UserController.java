@@ -26,7 +26,7 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/{userId}/detail")
-  public ResponseEntity<?> detail(@PathVariable Long userId){
+  public ResponseEntity<UserDto> detail(@PathVariable Long userId){
 
     UserDto user = userService.detail(userId);
 
@@ -36,7 +36,7 @@ public class UserController {
 
 
   @PutMapping("/{userId}/update")
-  public ResponseEntity<?> update(@PathVariable Long userId,
+  public ResponseEntity<UserDto> update(@PathVariable Long userId,
                                   @Valid @RequestBody UserModifiedDto dto) {
     UserDto userDto = userService.update(userId, dto);
 
@@ -44,15 +44,15 @@ public class UserController {
   }
 
   @PatchMapping("/{userId}/password")
-  public ResponseEntity<?> password(@PathVariable Long userId, @Valid @RequestBody ChangedPassword dto) {
+  public ResponseEntity<ChangedPassword> password(@PathVariable Long userId, @Valid @RequestBody ChangedPassword dto) {
 
-    userService.changePassword(userId, dto);
+    ChangedPassword changedPassword = userService.changePassword(userId, dto);
 
-    return ResponseEntity.ok("수정 완료");
+    return ResponseEntity.ok(changedPassword);
   }
 
   @DeleteMapping("/{userId}/delete")
-  public ResponseEntity<?> update(@PathVariable Long userId, String password) {
+  public ResponseEntity<Void> update(@PathVariable Long userId, String password) {
 
     userService.delete(userId, password);
 

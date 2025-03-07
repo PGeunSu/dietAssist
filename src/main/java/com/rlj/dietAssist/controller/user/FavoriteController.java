@@ -30,7 +30,7 @@ public class FavoriteController {
 
 
   @PostMapping("/add")
-  public ResponseEntity<?> addFavorite(@AuthenticationPrincipal CustomUserDetails user,
+  public ResponseEntity<FavoriteDto> addFavorite(@AuthenticationPrincipal CustomUserDetails user,
       @RequestParam Long foodId, @RequestParam String notes) {
 
     FavoriteDto favoriteDto =  favoriteService.addFavorite(user.getId(), foodId, notes);

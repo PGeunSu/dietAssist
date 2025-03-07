@@ -26,28 +26,28 @@ public class MealController {
   private final MealService mealService;
 
   @PostMapping("/create")
-  public ResponseEntity<?> createMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealCreateDto mealCreateDto){
+  public ResponseEntity<Meal> createMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealCreateDto mealCreateDto){
     Meal meal = mealService.createMeal(user.getId(), mealCreateDto);
 
     return ResponseEntity.ok(meal);
   }
 
   @GetMapping("/{mealId}/info")
-  public ResponseEntity<?> getMeal(@PathVariable Long mealId){
+  public ResponseEntity<MealDto> getMeal(@PathVariable Long mealId){
     MealDto mealFoods = mealService.getMeal(mealId);
 
     return ResponseEntity.ok(mealFoods);
   }
 
   @PutMapping("/update")
-  public ResponseEntity<?> modifiedMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealModifiedDto dto){
+  public ResponseEntity<MealDto> modifiedMeal(@AuthenticationPrincipal CustomUserDetails user, @RequestBody MealModifiedDto dto){
     MealDto mealDto = mealService.modifiedMeal(user.getId(), dto);
 
     return ResponseEntity.ok(mealDto);
   }
 
   @DeleteMapping("/{mealFoodId}/delete")
-  public ResponseEntity<?> deleteMealFood(@AuthenticationPrincipal CustomUserDetails user, Long mealId, @PathVariable Long mealFoodId){
+  public ResponseEntity<Void> deleteMealFood(@AuthenticationPrincipal CustomUserDetails user, Long mealId, @PathVariable Long mealFoodId){
     mealService.deleteMealFood(user.getId(), mealId, mealFoodId);
 
     return ResponseEntity.noContent().build();
@@ -55,7 +55,7 @@ public class MealController {
 
 
   @DeleteMapping("/{mealId}/deleteAll")
-  public ResponseEntity<?> deleteMeal(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long mealId){
+  public ResponseEntity<Void> deleteMeal(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long mealId){
     mealService.deleteMeal(user.getId(), mealId);
 
     return ResponseEntity.noContent().build();

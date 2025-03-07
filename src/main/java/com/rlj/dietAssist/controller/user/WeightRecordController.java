@@ -24,7 +24,7 @@ public class WeightRecordController {
   private final WeightRecordService weightRecordService;
 
   @PostMapping("/add")
-  public ResponseEntity<?> addWeightRecord(@AuthenticationPrincipal CustomUserDetails user, @RequestParam float weight, @RequestParam LocalDate date){
+  public ResponseEntity<WeightRecordDto> addWeightRecord(@AuthenticationPrincipal CustomUserDetails user, @RequestParam float weight, @RequestParam LocalDate date){
 
     WeightRecordDto weightRecordDto = weightRecordService.saveWeightRecord(user.getId(), weight, date);
 
@@ -32,7 +32,7 @@ public class WeightRecordController {
   }
 
   @GetMapping("/{recordId}")
-  public ResponseEntity<?> showRecord(@PathVariable Long recordId){
+  public ResponseEntity<WeightRecordDto> showRecord(@PathVariable Long recordId){
 
     WeightRecordDto weightRecordDto = weightRecordService.getWeightRecord(recordId);
 
@@ -40,7 +40,7 @@ public class WeightRecordController {
   }
 
   @GetMapping("/records")
-  public ResponseEntity<?> showRecords(@AuthenticationPrincipal CustomUserDetails user,
+  public ResponseEntity<List<WeightRecordDto>> showRecords(@AuthenticationPrincipal CustomUserDetails user,
       @RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
 
     List<WeightRecordDto> records = weightRecordService.getDateWeightRecord(user.getId(), startDate, endDate);
@@ -49,7 +49,7 @@ public class WeightRecordController {
   }
 
   @PatchMapping("/{recordId}/update")
-  public ResponseEntity<?> updateWeightRecord(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long recordId ,@RequestParam float weight){
+  public ResponseEntity<WeightRecordDto> updateWeightRecord(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long recordId ,@RequestParam float weight){
 
     WeightRecordDto weightRecordDto = weightRecordService.updateRecord(user.getId(), recordId, weight);
 

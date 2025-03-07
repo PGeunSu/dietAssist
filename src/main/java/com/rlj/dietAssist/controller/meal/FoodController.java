@@ -25,7 +25,7 @@ public class FoodController {
   private final FoodService foodService;
 
   @PostMapping("/save")
-  public ResponseEntity<?> selfSaveFoodNutrient(@AuthenticationPrincipal CustomUserDetails user, @RequestBody RegisterFood registerFood){
+  public ResponseEntity<RegisterFood> selfSaveFoodNutrient(@AuthenticationPrincipal CustomUserDetails user, @RequestBody RegisterFood registerFood){
 
     foodService.selfFoodNutrient(user.getId(), registerFood);
 
@@ -33,7 +33,7 @@ public class FoodController {
   }
 
   @PostMapping("/save/{id}")
-  public ResponseEntity<?> saveFoodNutrient(@PathVariable Long id, @RequestParam String foodName){
+  public ResponseEntity<FoodDto> saveFoodNutrient(@PathVariable Long id, @RequestParam String foodName){
 
     FoodDto dto = foodService.saveFoodNutrient(id, foodName);
 
@@ -42,7 +42,7 @@ public class FoodController {
 
 
   @GetMapping("/nutrient")
-  public ResponseEntity<?> getFood(@RequestParam String foodName){
+  public ResponseEntity<List<FoodDto>> getFood(@RequestParam String foodName){
 
     List<FoodDto> foodList = foodService.getFoodNutrients(foodName);
 
@@ -52,7 +52,7 @@ public class FoodController {
 
 
   @GetMapping("/{id}/macro")
-  public ResponseEntity<?> getMacronutrient(@PathVariable Long id, @RequestParam int weight){
+  public ResponseEntity<FoodMacroDto> getMacronutrient(@PathVariable Long id, @RequestParam int weight){
 
     FoodMacroDto macroDto = foodService.getMacronutrients(id, weight);
 
