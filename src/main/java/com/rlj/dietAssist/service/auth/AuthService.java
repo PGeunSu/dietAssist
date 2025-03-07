@@ -28,15 +28,7 @@ public class AuthService {
       throw new Exception(ALREADY_REGISTER_USER);
     }
 
-    User user = User.builder()
-        .email(dto.getEmail())
-        .password(passwordEncoder.encode(dto.getPassword()))
-        .name(dto.getName())
-        .phone(dto.getPhone())
-        .height(dto.getHeight())
-        .weight(dto.getWeight())
-        .changed(false)
-        .build();
+    User user = User.from(dto, passwordEncoder);
 
     userRepository.save(user);
 

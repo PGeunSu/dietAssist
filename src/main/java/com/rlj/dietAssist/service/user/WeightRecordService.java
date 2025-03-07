@@ -39,11 +39,7 @@ public class WeightRecordService {
       throw new Exception(ALREADY_EXISTING_RECORD);
     }
 
-    WeightRecord weightRecord = WeightRecord.builder()
-        .user(user)
-        .weight(weight)
-        .date(date)
-        .build();
+    WeightRecord weightRecord = WeightRecord.from(user, weight, date);
 
     weightRecordRepository.save(weightRecord);
 

@@ -36,24 +36,14 @@ public class UserService {
   @Transactional
   public UserDto update(Long userId, UserModifiedDto dto){
 
-    User user = baseException.getUser(userId);
+    User updateUser = baseException.getUser(userId);
 
     //비밀번호 일치 여부 확인(카카오 간편가입일 경우 비밀번호를 묻지않음)
-    if (!checkPassword(dto.getPassword(), user.getPassword()) && !user.isChanged()){
+    if (!checkPassword(dto.getPassword(), updateUser.getPassword()) && !updateUser.isChanged()){
       throw new Exception(PASSWORD_NOT_MATCH);
     }
 
-    User updateUser = User.builder()
-        .id(user.getId())
-        .email(user.getEmail())
-        .name(dto.getName())
-        .password(passwordEncoder.encode(dto.getPassword()))
-        .phone(dto.getPhone())
-        .weight(dto.getWeight())
-        .height(dto.getHeight())
-        .build();
-
-    userRepository.save(updateUser);
+    updateUser.modify(dto.getName(), dto.getPhone(), dto.getHeight(), dto.getWeight());
 
     return UserDto.of(updateUser);
   }
@@ -77,9 +67,13 @@ public class UserService {
 
     if (!checkPassword(dto.getPassword(), user.getPassword())){
       throw new Exception(PASSWORD_NOT_MATCH);
-    }else if (dto.getPassword().equals(dto.getResetPassword())){
+    }
+
+    if (dto.getPassword().equals(dto.getResetPassword())){
       throw new Exception(PASSWORD_DUPLICATION);
-    }else if (!dto.getResetPassword().equals(dto.getConfirmPassword())){
+    }
+
+    if (!dto.getResetPassword().equals(dto.getConfirmPassword())){
       throw new Exception(CONFIRM_NOT_MATCH);
     }
 

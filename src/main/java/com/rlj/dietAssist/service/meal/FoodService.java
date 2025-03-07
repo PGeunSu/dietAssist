@@ -14,8 +14,8 @@ import com.rlj.dietAssist.entity.diet.Food;
 import com.rlj.dietAssist.exception.BaseException;
 import com.rlj.dietAssist.exception.Exception;
 import com.rlj.dietAssist.repository.meal.FoodRepository;
+import com.rlj.dietAssist.service.auth.Translator;
 import com.rlj.dietAssist.service.user.FavoriteService;
-import com.rlj.dietAssist.service.auth.TranslationService;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,7 +33,7 @@ public class FoodService {
   private final String API_KEY;
   private final RestTemplate restTemplate;
   private final ObjectMapper objectMapper;
-  private final TranslationService translationService;
+  private final Translator translator;
 
   private final FoodRepository foodRepository;
   private final BaseException baseException;
@@ -42,12 +42,12 @@ public class FoodService {
   private static final String BASE_URL = "https://api.nal.usda.gov/fdc/v1/";
 
   public FoodService( @Value("${spring.api.usda}") String key, RestTemplate restTemplate,
-      ObjectMapper objectMapper, TranslationService translationService,
+      ObjectMapper objectMapper, Translator translator,
       FoodRepository foodRepository, BaseException baseException, FavoriteService favoriteService) {
     this.API_KEY = key;
     this.restTemplate = restTemplate;
     this.objectMapper = objectMapper;
-    this.translationService = translationService;
+    this.translator = translator;
     this.foodRepository = foodRepository;
     this.baseException = baseException;
     this.favoriteService = favoriteService;
@@ -57,7 +57,7 @@ public class FoodService {
   //검색값 조회
   public List<FoodDto> getFoodNutrients(String foodName) {
 
-    String englishText = translationService.translateKoreanToEnglish(foodName);
+    String englishText = translator.translateKoreanToEnglish(foodName);
 
     String url = BASE_URL + "foods/search" +
         "?query=" + englishText + "&api_key=" + API_KEY;
@@ -146,15 +146,7 @@ public class FoodService {
       throw new Exception(ALREADY_EXISTING_FOOD);
     }
 
-    Food food = Food.builder()
-        .name(foodDto.getFoodName())
-        .weight(foodDto.getWeight())
-        .energy(foodDto.getEnergy())
-        .carbohydrate(foodDto.getCarbohydrate())
-        .sugar(foodDto.getSugar())
-        .protein(foodDto.getProtein())
-        .fat(foodDto.getFat())
-        .build();
+    Food food = Food.from(foodDto);
 
     foodRepository.save(food);
 

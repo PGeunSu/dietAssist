@@ -1,5 +1,6 @@
 package com.rlj.dietAssist.service.auth;
 
+import com.rlj.dietAssist.dto.auth.SignUpDto;
 import com.rlj.dietAssist.entity.user.User;
 import com.rlj.dietAssist.jwt.JwtTokenProvider;
 import com.rlj.dietAssist.dto.auth.KakaoUserInfoDto;
@@ -59,16 +60,12 @@ public class OAuth2UserService {
 
   @Transactional
   private User registerNewUser(KakaoUserInfoDto kakaoUser) {
-    User newUser = User.builder()
-        .email(kakaoUser.getEmail())
-        .name(kakaoUser.getNickname())
-        .password(passwordEncoder.encode(UUID.randomUUID().toString()))  // 랜덤 비밀번호 설정
-        //임시 설정
-        .phone("000-0000-0000")
-        .height(0)
-        .weight(0)
-        .changed(true)
-        .build();
+    User newUser = User.from(
+        new SignUpDto(kakaoUser.getEmail(),
+            kakaoUser.getNickname(),
+            passwordEncoder.encode(UUID.randomUUID().toString()),
+            "000-0000-0000", 0, 0), passwordEncoder);
+    newUser.setChanged(true);
 
     return userRepository.save(newUser);
   }

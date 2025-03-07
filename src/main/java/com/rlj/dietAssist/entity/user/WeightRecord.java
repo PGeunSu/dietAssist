@@ -22,7 +22,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EntityListeners(value = AuditingEntityListener.class)
 public class WeightRecord extends BaseEntity {
 
@@ -38,6 +37,15 @@ public class WeightRecord extends BaseEntity {
   private float weight;
 
   private LocalDate date;
+
+  @Builder
+  public static WeightRecord from(User user, float weight, LocalDate date){
+    return WeightRecord.builder()
+        .user(user)
+        .weight(weight)
+        .date(date)
+        .build();
+  }
 
   public void modifiedRecord(float weight){
     this.weight = weight;
