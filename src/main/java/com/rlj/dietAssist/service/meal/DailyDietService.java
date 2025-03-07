@@ -35,8 +35,8 @@ public class DailyDietService {
     User user = baseException.getUser(userId);
 
     DailyDiet dailyDiet = new DailyDiet();
-    dailyDiet.setUser(user);
-    dailyDiet.setDate(dto.getDate());
+
+    dailyDiet.setDailyDiet(user, dto.getDate());
 
     for (int i = 0; i < dto.getMealIds().size(); i++) {
       Meal meal = baseException.getMeal(dto.getMealIds().get(i));

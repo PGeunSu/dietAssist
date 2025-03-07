@@ -1,10 +1,9 @@
 package com.rlj.dietAssist.dto.user;
 
-import com.rlj.dietAssist.entity.user.User;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 public class ChangedPassword {
 

@@ -77,16 +77,17 @@ public class FoodService {
         if (cnt >= 10) break; //10개까지만 조회
 
         JsonNode nutrients = item.path("foodNutrients");
-        FoodDto foodDto = new FoodDto();
 
-        foodDto.setId(item.path("fdcId").asLong());
-        foodDto.setFoodName(item.path("description").asText());
-        foodDto.setWeight(100);
-        foodDto.setEnergy(getNutrientValue(nutrients, 1008));  // Energy (kcal)
-        foodDto.setCarbohydrate(getNutrientValue(nutrients, 1005)); // Carbohydrates (g)
-        foodDto.setSugar(getNutrientValue(nutrients, 2000)); // Sugars (g)
-        foodDto.setProtein(getNutrientValue(nutrients, 1003)); // Protein (g)
-        foodDto.setFat(getNutrientValue(nutrients, 1004)); // Total Fat (g)
+        FoodDto foodDto = FoodDto.getFoodApi(
+            item.path("fdcId").asLong(),
+            item.path("description").asText(),
+            100, // Weight(g)
+            getNutrientValue(nutrients, 1008),  // Energy (kcal)
+            getNutrientValue(nutrients, 1005), // Carbohydrates (g)
+            getNutrientValue(nutrients, 2000), // Sugars (g)
+            getNutrientValue(nutrients, 1003),  // Protein (g)
+            getNutrientValue(nutrients, 1004) // Total Fat (g)
+        );
 
         foodList.add(foodDto);
         cnt++;
@@ -117,17 +118,7 @@ public class FoodService {
       throw new Exception(ALREADY_EXISTING_FOOD);
     }
 
-    Food food = Food.builder()
-        .name(registerFood.getFoodName())
-        .weight(registerFood.getWeight())
-        .energy(registerFood.getEnergy())
-        .carbohydrate(registerFood.getCarbohydrate())
-        .sugar(registerFood.getSugar())
-        .protein(registerFood.getProtein())
-        .fat(registerFood.getFat())
-        .build();
-
-    Food saveFood = foodRepository.save(food);
+    Food saveFood = foodRepository.save(Food.registerFood(registerFood));
 
     //저장 시 자동으로 즐겨찾기
     favoriteService.addFavorite(userId, saveFood.getId(), registerFood.getNotes());
@@ -164,16 +155,14 @@ public class FoodService {
       throw new Exception(GRAM_UNIT_ERROR);
     }
 
-    FoodMacroDto macroDto = FoodMacroDto.from(food);
-
-    macroDto.setWeight(getMacro(macroDto.getWeight(), weight));
-    macroDto.setEnergy(getMacro(macroDto.getEnergy(), weight));
-    macroDto.setCarbohydrate(getMacro(macroDto.getCarbohydrate(), weight));
-    macroDto.setProtein(getMacro(macroDto.getProtein(), weight));
-    macroDto.setFat(getMacro(macroDto.getFat(), weight));
-    macroDto.setSugar(getMacro(macroDto.getSugar(), weight));
-
-    return macroDto;
+    return FoodMacroDto.from(
+        food.getName(),
+        getMacro(food.getWeight(), weight),
+        getMacro(food.getEnergy(), weight),
+        getMacro(food.getCarbohydrate(), weight),
+        getMacro(food.getProtein(), weight),
+        getMacro(food.getFat(), weight),
+        getMacro(food.getSugar(), weight));
   }
 
   private float getMacro(float nutrient, int weight) {

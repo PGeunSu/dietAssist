@@ -2,6 +2,7 @@ package com.rlj.dietAssist.entity.diet;
 
 
 import com.rlj.dietAssist.dto.food.FoodDto;
+import com.rlj.dietAssist.dto.food.RegisterFood;
 import com.rlj.dietAssist.entity.base.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -45,6 +46,18 @@ public class Food extends BaseEntity {
         .sugar(foodDto.getSugar())
         .protein(foodDto.getProtein())
         .fat(foodDto.getFat())
+        .build();
+  }
+
+  public static Food registerFood(RegisterFood registerFood){
+    return Food.builder()
+        .name(registerFood.getFoodName())
+        .weight(registerFood.getWeight())
+        .energy(registerFood.getEnergy())
+        .carbohydrate(registerFood.getCarbohydrate())
+        .sugar(registerFood.getSugar())
+        .protein(registerFood.getProtein())
+        .fat(registerFood.getFat())
         .build();
   }
 

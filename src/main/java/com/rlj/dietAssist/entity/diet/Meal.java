@@ -26,7 +26,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
@@ -61,6 +60,11 @@ public class Meal extends BaseEntity {
     mealFoods.remove(mealFood);
     mealFood.setMeal(null);
     updateNutrients();
+  }
+
+  public void setMealUser(String name, User user){
+    this.name = name;
+    this.user = user;
   }
 
   public void updateNutrients() {

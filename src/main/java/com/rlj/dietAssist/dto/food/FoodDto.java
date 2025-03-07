@@ -2,10 +2,10 @@ package com.rlj.dietAssist.dto.food;
 
 import com.rlj.dietAssist.entity.diet.Food;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodDto {
@@ -21,7 +21,8 @@ public class FoodDto {
 
   public static FoodDto from(Long id, Food food){
     return new FoodDto(
-        id, food.getName(),
+        id,
+        food.getName(),
         food.getWeight(),
         food.getEnergy(),
         food.getCarbohydrate(),
@@ -31,6 +32,9 @@ public class FoodDto {
     );
   }
 
-
+  public static FoodDto getFoodApi(Long id, String foodName, float weight, float energy,
+      float carbohydrate, float sugar, float protein, float fat) {
+    return new FoodDto(id, foodName, weight, energy, carbohydrate, sugar, protein, fat);
   }
+}
 

@@ -36,8 +36,8 @@ public class MealService {
     User user = baseException.getUser(userId);
 
     Meal meal  = new Meal();
-    meal.setName(dto.getMealName());
-    meal.setUser(user);
+
+    meal.setMealUser(dto.getMealName(), user);
 
     for (int i = 0; i < dto.getFoodIds().size(); i++) {
       Long foodId = dto.getFoodIds().get(i);

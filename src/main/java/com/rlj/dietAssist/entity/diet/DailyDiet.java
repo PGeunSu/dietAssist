@@ -27,7 +27,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(value = AuditingEntityListener.class)
@@ -63,6 +62,11 @@ public class DailyDiet extends BaseEntity {
     meals.remove(dailyMeal);
     dailyMeal.setDailyDiet(null);
     updateNutrients();
+  }
+
+  public void setDailyDiet(User user, LocalDate date){
+    this.user = user;
+    this.date = date;
   }
 
   // 영양소 값 업데이트 메서드
